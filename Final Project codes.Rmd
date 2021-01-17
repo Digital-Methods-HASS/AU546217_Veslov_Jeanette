@@ -1,0 +1,81 @@
+---
+title: "Final Project"
+output:
+  word_document: default
+  html_document: default
+---
+# Importing libraries
+
+```{r message=FALSE}
+library(tidyverse)
+library(Hmisc)
+```
+
+# Importing data
+```{r}
+witch_database <- mdb.get("Data/Witchcraftsurvey_download/Witchcraftsurvey_download.mdb")
+```
+
+
+
+```{r}
+contents(witch_database)
+```
+
+
+```{r}
+DemonicPact <- mdb.get("Data/Witchcraftsurvey_download/Witchcraftsurvey_download.mdb", tables = "WDB_DemonicPact")
+```
+
+# Analysis and visualization 
+```{r}
+DemonicPact %>% 
+  count(Demonic.Type, sort = TRUE)
+```
+
+
+
+```{r message=FALSE}
+DemonicPact %>% 
+  count(Demonic.Type, sort = TRUE) %>% 
+  top_n(9) %>%
+  mutate(Demonic.Type = reorder(Demonic.Type, n)) %>%
+  ggplot(aes(x = Demonic.Type, y = n, fill = Demonic.Type)) +
+  geom_col() +
+  coord_flip() +
+  xlab(NULL) +
+      labs(x = "Types",
+      y = "Count",
+      title = "Count of Demonic pacts") 
+```
+
+
+
+# Other Charges
+
+```{r}
+OtherCharges <- mdb.get("Data/Witchcraftsurvey_download/Witchcraftsurvey_download.mdb", tables = "WDB_OtherCharges")
+```
+
+```{r}
+OtherCharges %>% 
+  count(OtherCharges.Type, sort = TRUE)
+```
+
+
+```{r message=FALSE}
+OtherCharges %>% 
+  count(OtherCharges.Type, sort = TRUE) %>% 
+  top_n(10) %>%
+  mutate(OtherCharges.Type = reorder(OtherCharges.Type, n)) %>%
+  ggplot(aes(x = OtherCharges.Type, y = n, fill = OtherCharges.Type)) +
+  geom_col() +
+  coord_flip() +
+  xlab(NULL) +
+      labs(x = "Types",
+      y = "Count",
+      title = "Count of Other Charges") 
+  
+```
+
+
